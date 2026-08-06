@@ -51,7 +51,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setIsLoading(true);
     try {
       // Fetch open/unacknowledged violations
-      const openRes = await fetch('http://localhost:5001/api/violations?isAcknowledged=false', {
+      const openRes = await fetch(`${import.meta.env.VITE_API_URL}/api/violations?isAcknowledged=false`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (openRes.ok) {
@@ -61,7 +61,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       // If user is Admin, also fetch escalated alerts
       if (user?.role === 'ADMIN') {
-        const escRes = await fetch('http://localhost:5001/api/violations?escalatedOnly=true', {
+        const escRes = await fetch(`${import.meta.env.VITE_API_URL}/api/violations?escalatedOnly=true`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (escRes.ok) {
@@ -82,7 +82,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       // Establish WebSocket connection
       setSocketStatus('connecting');
-      const ws = new WebSocket(`ws://localhost:5001?token=${token}`);
+      const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}?token=${token}`);
 
       ws.onopen = () => {
         console.log('[WS] Connected to safety compliance WebSocket server');
@@ -140,7 +140,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const acknowledgeViolation = async (id: string) => {
     if (!token) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/violations/${id}/acknowledge`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/violations/${id}/acknowledge`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -150,7 +150,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         throw new Error(err.error || 'Failed to acknowledge violation');
       }
 
-      const updated = await res.json();
+      await res.json();
       // Remove from lists locally (ws will also trigger this, but updating locally makes it instant)
       setViolations((prev) => prev.filter((v) => v.id !== id));
       setEscalatedViolations((prev) => prev.filter((v) => v.id !== id));
@@ -164,7 +164,7 @@ export const ViolationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const triggerSimulation = async (workerId?: string) => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5001/api/simulator/trigger', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/simulator/trigger`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

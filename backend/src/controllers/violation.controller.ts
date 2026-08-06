@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth';
 import { prisma } from '../utils/db';
 import { simulatorService } from '../services/simulator';
-import { webSocketService } from './websocket';
+import { webSocketService } from '../services/websocket';
 
 export async function getViolations(req: AuthenticatedRequest, res: Response) {
   try {

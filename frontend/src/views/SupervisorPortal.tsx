@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useViolations, Violation } from '../context/ViolationContext';
+import { useViolations } from '../context/ViolationContext';
 import { 
   Users, AlertOctagon, CheckCircle2, Download, Clock, 
-  MapPin, ShieldAlert, FileSpreadsheet, RefreshCw
+  MapPin, ShieldAlert, RefreshCw
 } from 'lucide-react';
 
 export const SupervisorPortal: React.FC = () => {
@@ -15,7 +15,7 @@ export const SupervisorPortal: React.FC = () => {
   const fetchDashboardStats = async () => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5001/api/dashboard/supervisor', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/supervisor`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -40,7 +40,7 @@ export const SupervisorPortal: React.FC = () => {
   const handleExportCSV = async () => {
     if (!token) return;
     try {
-      window.open(`http://localhost:5001/api/violations/export?token=${token}`, '_blank');
+      window.open(`${import.meta.env.VITE_API_URL}/api/violations/export?token=${token}`, '_blank');
     } catch (error) {
       console.error('Export failed:', error);
     }
@@ -63,7 +63,7 @@ export const SupervisorPortal: React.FC = () => {
   };
 
   // Filter violations to only show unacknowledged ones for the supervisor's site
-  const siteActiveViolations = violations.filter(v => v.worker.siteId === user?.siteId);
+  const siteActiveViolations = violations.filter(v => v.worker.site.id === user?.siteId);
 
   return (
     <div style={{ padding: '0 24px 24px 24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>

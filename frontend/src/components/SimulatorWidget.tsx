@@ -21,7 +21,7 @@ export const SimulatorWidget: React.FC = () => {
 
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5001/api/simulator/settings', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/simulator/settings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -37,7 +37,7 @@ export const SimulatorWidget: React.FC = () => {
 
     const fetchWorkers = async () => {
       try {
-        const res = await fetch('http://localhost:5001/api/workers', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/workers`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -59,7 +59,7 @@ export const SimulatorWidget: React.FC = () => {
     setIsConfiguring(true);
     setMessage('');
     try {
-      const res = await fetch('http://localhost:5001/api/simulator/configure', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/simulator/configure`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export const SimulatorWidget: React.FC = () => {
       });
 
       if (res.ok) {
-        const data = await res.json();
+        await res.json();
         setMessage('Settings saved!');
         setTimeout(() => setMessage(''), 3000);
       } else {
