@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useViolations, Violation } from '../context/ViolationContext';
+import { useViolations } from '../context/ViolationContext';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, LineChart, Line, CartesianGrid 
 } from 'recharts';
 import { 
   LayoutDashboard, AlertTriangle, Users, BarChart3, Clock, 
-  MapPin, Plus, UserPlus, Eye, Check, RefreshCw, AlertCircle
+  MapPin, UserPlus, Check, RefreshCw
 } from 'lucide-react';
 
 export const AdminPortal: React.FC = () => {
@@ -30,7 +30,7 @@ export const AdminPortal: React.FC = () => {
   const fetchAdminStats = async () => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5001/api/dashboard/admin', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/admin`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -45,7 +45,7 @@ export const AdminPortal: React.FC = () => {
   const fetchSupervisors = async () => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5001/api/users/supervisors', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/supervisors`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -60,7 +60,7 @@ export const AdminPortal: React.FC = () => {
   const fetchSites = async () => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5001/api/sites', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/sites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -93,7 +93,7 @@ export const AdminPortal: React.FC = () => {
     setFormMsg(null);
     setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5001/api/users/supervisors', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/supervisors`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -633,7 +633,7 @@ export const AdminPortal: React.FC = () => {
                       contentStyle={{ backgroundColor: 'var(--bg-dark-obsidian)', borderColor: 'var(--border-glass)', color: 'white' }}
                     />
                     <Bar dataKey="count" fill="var(--color-primary-light)" radius={[4, 4, 0, 0]}>
-                      {(dashboardData?.charts?.violationsByDepartment || []).map((entry: any, index: number) => (
+                      {(dashboardData?.charts?.violationsByDepartment || []).map((_: any, index: number) => (
                         <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                       ))}
                     </Bar>
@@ -658,7 +658,7 @@ export const AdminPortal: React.FC = () => {
                       dataKey="count"
                       nameKey="type"
                     >
-                      {(dashboardData?.charts?.violationsByType || []).map((entry: any, index: number) => (
+                      {(dashboardData?.charts?.violationsByType || []).map((_: any, index: number) => (
                         <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                       ))}
                     </Pie>

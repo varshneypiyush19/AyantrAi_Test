@@ -99,6 +99,6 @@ simulatorService.start();
 
 // Listen
 server.listen(port, () => {
-  console.log(`[SERVER] Running at http://localhost:${port}`);
-  console.log(`[WS] Server upgrades supported on http://localhost:${port}`);
+  console.log(`[SERVER] Running at PORT :${port}`);
+  console.log(`[WS] Server upgrades supported on PORT :${port}`);
 });

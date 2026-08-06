@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       try {
-        const res = await fetch('http://localhost:5001/api/auth/me', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setError(null);
     try {
-      const res = await fetch('http://localhost:5001/api/auth/login', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
